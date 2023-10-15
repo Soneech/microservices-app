@@ -8,7 +8,7 @@ import org.soneech.exception.ProductException;
 import org.soneech.mapper.DefaultMapper;
 import org.soneech.model.Product;
 import org.soneech.service.ProductService;
-import org.soneech.util.MessageService;
+import org.soneech.util.ErrorsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +47,7 @@ public class ProductController {
                                          BindingResult bindingResult) throws CompanyException {
         if (bindingResult.hasErrors()) {
             return ResponseEntity
-                    .badRequest().body(Map.of("message", MessageService.prepareFieldsErrorMessage(bindingResult)));
+                    .badRequest().body(Map.of("message", ErrorsUtil.prepareFieldsErrorMessage(bindingResult)));
         }
 
         Product product = mapper.convertToProduct(productRequestDTO);
@@ -63,7 +63,7 @@ public class ProductController {
 
         if (bindingResult.hasErrors()) {
             return ResponseEntity
-                    .badRequest().body(Map.of("message", MessageService.prepareFieldsErrorMessage(bindingResult)));
+                    .badRequest().body(Map.of("message", ErrorsUtil.prepareFieldsErrorMessage(bindingResult)));
         }
         Product product = mapper.convertToProductWithId(productRequestDTO, id);
         Product updatedProduct = productService.update(id, product);

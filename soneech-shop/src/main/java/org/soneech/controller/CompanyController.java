@@ -8,7 +8,7 @@ import org.soneech.mapper.DefaultMapper;
 import org.soneech.model.Company;
 import org.soneech.service.CompanyService;
 import org.soneech.util.CompanyValidator;
-import org.soneech.util.MessageService;
+import org.soneech.util.ErrorsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +53,7 @@ public class CompanyController {
 
         if (bindingResult.hasErrors()) {
             return ResponseEntity
-                    .badRequest().body(Map.of("message", MessageService.prepareFieldsErrorMessage(bindingResult)));
+                    .badRequest().body(Map.of("message", ErrorsUtil.prepareFieldsErrorMessage(bindingResult)));
         }
         Company savedCompany = companyService.save(company);
         return ResponseEntity.ok(savedCompany);
@@ -68,7 +68,7 @@ public class CompanyController {
 
         if (bindingResult.hasErrors()) {
             return ResponseEntity
-                    .badRequest().body(Map.of("message", MessageService.prepareFieldsErrorMessage(bindingResult)));
+                    .badRequest().body(Map.of("message", ErrorsUtil.prepareFieldsErrorMessage(bindingResult)));
         }
         Company updatedCompany = companyService.update(id, company);
         return ResponseEntity.ok(updatedCompany);

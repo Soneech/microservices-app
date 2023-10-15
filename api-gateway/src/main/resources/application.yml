@@ -10,7 +10,24 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-
+      routes:
+#        - id: authentication
+#          uri: lb://auth-service
+#          predicates:
+#            - Path=/auth/**
+#            - Method=POST
+#
+#        - id: get-users
+#          uri: lb://auth-service
+#          predicates:
+#            - Path=/users/**
+#            - Method=GET
+#
+#        - id: soneech-shop
+#          uri: lb://soneech-shop
+#          predicates:
+#            - Path=/companies/**
+#            - Path=/products/**
 eureka:
   client:
     service-url:
