@@ -1,0 +1,48 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: authentication
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+
+        - id: users
+          uri: lb://auth-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - AuthenticationFilter
+
+        - id: companies
+          uri: lb://soneech-shop
+          predicates:
+            - Path=/companies/**
+          filters:
+            - AuthenticationFilter
+
+        - id: products
+          uri: lb://soneech-shop
+          predicates:
+            - Path=/products/**
+          filters:
+            - AuthenticationFilter
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+app:
+  jwt:
+    secret:
+    subject:
+    issuer:

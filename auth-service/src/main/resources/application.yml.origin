@@ -1,0 +1,37 @@
+server:
+  port: 0
+
+spring:
+  datasource:
+    driver-class-name:
+    url:
+    username:
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect:
+        show_sql: true
+
+  application:
+    name: auth-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+app:
+  messages:
+    not-found:
+      user: пользователь с таким id не найден
+      role: роль с таким названием не найдена
+    email: пользователь с такой почтой уже существует
+    phone-number: пользователь с таким номером телефора уже существует
+  jwt:
+    secret:
+    subject:
+    issuer:
+
