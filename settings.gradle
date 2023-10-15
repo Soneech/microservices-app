@@ -1,2 +1,4 @@
 rootProject.name = 'microservices-app'
 
+includeBuild('eureka-server')
+includeBuild('soneech-shop')

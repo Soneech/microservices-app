@@ -1,0 +1,24 @@
+server:
+  port: 0
+
+spring:
+  datasource:
+    driver-class-name:
+    url:
+    username:
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect:
+        show_sql: true
+  application:
+    name: soneech-shop
+
+app:
+  messages:
+    not-found:
+      company: комания с таким id не найдена
+      product: товар с таким id не найден
