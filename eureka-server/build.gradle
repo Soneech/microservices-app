@@ -19,6 +19,14 @@ ext {
     set('springCloudVersion', "2022.0.4")
 }
 
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'org.soneech.EurekaServerApplication'
+        )
+    }
+}
+
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -14,7 +14,8 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationService(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public RegistrationService(UserService userService, RoleService roleService,
+                               PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
