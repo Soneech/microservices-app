@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  db-shop:
+    container_name: db-shop
+    build:
+      context: soneech-shop/docker
+      dockerfile: Dockerfile.shop
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./sql/soneech-shop.sql:/docker-entrypoint-initdb.d/init.sql
+
+  db-auth:
+    container_name: db-auth
+    build:
+      context: auth-service/docker
+      dockerfile: Dockerfile.auth
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./sql/auth-service.sql:/docker-entrypoint-initdb.d/init.sql
+
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: eureka-server/docker
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+
+  soneech-shop:
+    container_name: soneech-shop
+    build:
+      context: soneech-shop/docker
+      dockerfile: Dockerfile.app
+    ports:
+      - "8089:8089"
+    depends_on:
+      - db-shop
+      - eureka-server
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-shop:5432/shop_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: auth-service/docker
+      dockerfile: Dockerfile.app
+    ports:
+      - "8088:8088"
+    depends_on:
+      - db-auth
+      - eureka-server
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-auth:5432/shop_users
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: api-gateway/docker
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    depends_on:
+      - auth-service
+      - soneech-shop
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
